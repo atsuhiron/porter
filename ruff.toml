@@ -1,0 +1,19 @@
+target-version = "py313"
+line-length = 119
+
+src = ["src"]
+
+[lint]
+select = ["ALL"]
+ignore = [
+    "D",
+    "TRY003",   # Raw literal on error message
+    "EM101",    # Raw literal on error message
+    "EM102",    # f-string on error message
+    "COM812",   # avoid conflict
+]
+
+[format]
+indent-style = "space"
+quote-style = "double"
+skip-magic-trailing-comma = false

@@ -2,59 +2,17 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import Enum, auto
+from typing import TYPE_CHECKING
 
+from porter.vo import Coord, PacketId, PacketStatus, PorterId, PostId, Timestamp
 
-@dataclass(frozen=True)
-class PostId:
-    id: str
-
-
-@dataclass(frozen=True)
-class PacketId:
-    id: str
-
-
-@dataclass(frozen=True)
-class PorterId:
-    id: str
-
-
-@dataclass(frozen=True)
-class Timestamp:
-    timestamp: float
-
-
-class PacketStatus(Enum):
-    WAITING = auto()
-    RESERVED = auto()
-    IN_PORTING = auto()
-    DELIVERED = auto()
-
-
-@dataclass(frozen=True)
-class Coord:
-    x: float
-    y: float
-
+if TYPE_CHECKING:
+    from porter.graph import PostGraph
 
 @dataclass(frozen=True)
 class Post:
     id: PostId
     coord: Coord
-
-
-@dataclass(frozen=True)
-class PostGraph:
-    posts: dict[PostId, dict[PostId, float]]  # post_id -> (post_id -> time)
-
-    def get_time(self, from_id: PostId, to_id: PostId) -> float:
-        if from_id not in self.posts:
-            raise ValueError(f"from_id {from_id} not found")
-        if to_id not in self.posts[from_id]:
-            raise ValueError(f"to_id {to_id} not found")
-
-        return self.posts[from_id][to_id]
 
 
 @dataclass(frozen=True)
